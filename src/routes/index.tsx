@@ -318,7 +318,7 @@ function NavBar({ active }: { active: string }) {
             {NAV.map((n) => (
               <a
                 key={n.id}
-                href={`{n.id}`}
+                href={`${n.id}`}
                 className={`relative rounded-md px-3 py-1.5 text-sm transition-colors ${
                   active === n.id ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 }`}
