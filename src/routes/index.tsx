@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
 import {
@@ -33,8 +33,14 @@ import {
   Cloud,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
+  Image as ImageIcon,
 } from "lucide-react";
 import portrait from "@/assets/portrait.jpg";
+import resumeUrl from "@/assets/resume/Anshuman_Behera_Resume.pdf?url";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { PROJECTS } from "@/lib/projects";
+import { RECOGNITION } from "@/lib/recognition";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -44,75 +50,10 @@ const NAV = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
   { id: "projects", label: "Projects" },
+  { id: "recognition", label: "Events" },
   { id: "experience", label: "Experience" },
   { id: "skills", label: "Skills" },
   { id: "contact", label: "Contact" },
-];
-
-const PROJECTS = [
-  {
-    title: "RAG Docs Assistant",
-    blurb:
-      "A retrieval-augmented chatbot over internal documentation — semantic search, source citations, and streaming responses via the OpenAI API.",
-    tags: ["Next.js", "LangChain", "Pinecone", "OpenAI API"],
-    accent: "from-primary/20 to-transparent",
-    repo: "https://github.com/AsyncCoder-10",
-    //live: "#",
-  },
-  {
-    title: "AI Code Review Bot",
-    blurb:
-      "A GitHub Action that reviews pull requests using an LLM — flags bugs, suggests fixes, and summarizes diffs before a human ever looks.",
-    tags: ["Node.js", "GitHub Actions", "Claude API", "TypeScript"],
-    accent: "from-secondary/20 to-transparent",
-    repo: "https://github.com/AsyncCoder-10",
-    //live: "#",
-  },
-  {
-    title: "Prompt Playground",
-    blurb:
-      "An internal tool for testing and comparing prompts across models — versioning, side-by-side outputs, and eval scoring for regressions.",
-    tags: ["React", "Vercel AI SDK", "Zustand", "OpenAI/Anthropic APIs"],
-    accent: "from-accent/20 to-transparent",
-    repo: "https://github.com/AsyncCoder-10",
-    //live: "#",
-  },
-  {
-    title: "Healthcare Exchange Platform",
-    blurb:
-      "Angular 14 SPA integrating with Laravel and Node.js RESTful APIs, serving thousands of active users with modular, reusable component architecture.",
-    tags: ["Angular", "RxJS", "Laravel", "Node.js"],
-    accent: "from-primary/20 to-transparent",
-    repo: "https://github.com/AsyncCoder-10",
-    //live: "#",
-  },
-  {
-    title: "Assessment Data Dashboard",
-    blurb:
-      "Data-intensive dashboard built with lazy loading and OnPush change detection, optimized for fast load times at scale.",
-    tags: ["Angular", "RxJS", "Bundle Optimization"],
-    accent: "from-secondary/20 to-transparent",
-    repo: "https://github.com/AsyncCoder-10",
-    //live: "#",
-  },
-  {
-    title: "HR Management Suite",
-    blurb:
-      "Role-based CRUD modules for payroll, employee data, and permissions, integrated with .NET Core APIs and a shared component library cutting UI redundancy by ~30%.",
-    tags: ["Angular 12", "RxJS", ".NET Core", "RBAC"],
-    accent: "from-accent/20 to-transparent",
-    repo: "https://github.com/AsyncCoder-10",
-    //live: "#",
-  },
-  {
-    title: "Buy Gems - E-commerce Platform",
-    blurb:
-      "Role-based CRUD modules for payroll, employee data, and permissions, integrated with .NET Core APIs and a shared component library cutting UI redundancy by ~30%.",
-    tags: ["Angular 12", "RxJS", ".NET Core", "RBAC"],
-    accent: "from-accent/20 to-transparent",
-    repo: "https://github.com/AsyncCoder-10",
-    //live: "#",
-  },
 ];
 
 const EXPERIENCE = [
@@ -121,6 +62,7 @@ const EXPERIENCE = [
     role: "Senior Full-Stack Engineer",
     dates: "July 2023 – Present",
     location: "Vadodara, India",
+    current: true,
     points: [
       "Architected 5+ Angular (v14+) SPAs integrating with Laravel and Node.js RESTful APIs for thousands of active users.",
       "Engineered modular, reusable component libraries with Angular CLI and RxJS, improving development efficiency by 20%.",
@@ -254,7 +196,11 @@ const STACK_TAGS = [
 function Portfolio() {
   const [active, setActive] = useState("home");
   const { scrollYProgress } = useScroll();
-  const progressX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.2 });
+  const progressX = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    mass: 0.2,
+  });
 
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
@@ -288,6 +234,7 @@ function Portfolio() {
         <About />
         <TechStackMarquee />
         <Projects />
+        <Recognition />
         <Experience />
         <Skills />
         <Contact />
@@ -320,7 +267,9 @@ function NavBar({ active }: { active: string }) {
                 key={n.id}
                 href={`#${n.id}`}
                 className={`relative rounded-md px-3 py-1.5 text-sm transition-colors ${
-                  active === n.id ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                  active === n.id
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {n.label}
@@ -334,12 +283,15 @@ function NavBar({ active }: { active: string }) {
             ))}
           </nav>
 
-          <a
-            href="#contact"
-            className="hidden rounded-md border border-primary/40 bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary transition hover:bg-primary/20 hover:shadow-glow sm:block"
-          >
-            Let's talk
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href="#contact"
+              className="hidden rounded-md border border-primary/40 bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary transition hover:bg-primary/20 hover:shadow-glow sm:block"
+            >
+              Let's talk
+            </a>
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </header>
@@ -352,27 +304,32 @@ function Section({
   id,
   eyebrow,
   title,
+  action,
   children,
 }: {
   id: string;
   eyebrow: string;
   title: string;
+  action?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-24 py-24">
+    <section id={id} className="scroll-mt-24 py-8 sm:py-10">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="mb-12"
+        className="mb-12 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"
       >
-        <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-primary/80">
-          <span className="h-px w-8 bg-primary/50" />
-          {eyebrow}
+        <div>
+          <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-primary/80">
+            <span className="h-px w-8 bg-primary/50" />
+            {eyebrow}
+          </div>
+          <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">{title}</h2>
         </div>
-        <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">{title}</h2>
+        {action}
       </motion.div>
       {children}
     </section>
@@ -383,12 +340,16 @@ function Hero() {
   return (
     <section id="home" className="relative scroll-mt-24 pt-8">
       {/* animated blob */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 grid-pattern" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 grid-pattern"
+      />
       <motion.div
         aria-hidden
         className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[520px] w-[520px] -translate-x-1/2 rounded-full blur-3xl"
         style={{
-          background: "radial-gradient(closest-side, oklch(0.82 0.22 148 / 0.35), transparent)",
+          background:
+            "radial-gradient(closest-side, color-mix(in oklab, var(--primary) 35%, transparent), transparent)",
           animation: "blob 14s ease-in-out infinite",
         }}
       />
@@ -410,15 +371,18 @@ function Hero() {
 
           <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
             Building{" "}
-            <span className="relative inline-block text-primary text-glow">fast, thoughtful</span>
+            <span className="relative inline-block text-primary text-glow">
+              fast, thoughtful
+            </span>
             <br />
             web products.
           </h1>
 
           <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-            I'm <span className="text-foreground">Anshuman Behera</span>, a full-stack AI engineer.
-            I build intelligent, production-ready applications — from LLM-powered features to the
-            polished interfaces that ship them.
+            I'm <span className="text-foreground">Anshuman Behera</span>, a
+            full-stack AI engineer. I build intelligent, production-ready
+            applications — from LLM-powered features to the polished interfaces
+            that ship them.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -429,14 +393,14 @@ function Hero() {
               Get in touch
               <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
-            {/* 
-    href="/resume/Anshuman-Behera-Resume.pdf"
-    download="Anshuman-Behera-Resume.pdf"
-    className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground transition hover:border-primary/50 hover:text-primary"
-  >
-    <Download className="h-4 w-4" />
-    Resume
-  </a> */}
+            <a
+              href={resumeUrl}
+              download="Anshuman-Behera-Resume.pdf"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground transition hover:border-primary/50 hover:text-primary"
+            >
+              <Download className="h-4 w-4" />
+              Download resume
+            </a>
 
             <div className="flex items-center gap-2">
               <a
@@ -498,18 +462,21 @@ function Hero() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative mx-auto hidden aspect-[4/5] w-64 md:block"
+          className="relative mx-auto hidden aspect-square w-72 md:block lg:w-80 xl:w-96"
         >
-          <div className="absolute -inset-4 rounded-2xl bg-primary/20 blur-2xl" />
-          <div className="relative h-full w-full overflow-hidden rounded-2xl border border-primary/30 shadow-glow">
-            <img
-              src={portrait}
-              alt="Portrait of Anshuman Behera"
-              width={800}
-              height={1000}
-              className="h-full w-full object-cover"
-            />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-transparent" />
+          <div className="portrait-glow absolute -inset-5 rounded-full bg-primary/20 blur-2xl" />
+          <div className="portrait-orbit pointer-events-none absolute -inset-4 rounded-full border border-dashed border-primary/40" />
+          <div className="portrait-float relative h-full w-full">
+            <div className="relative h-full w-full overflow-hidden rounded-full border border-primary/40 shadow-glow">
+              <img
+                src={portrait}
+                alt="Portrait of Anshuman Behera"
+                width={800}
+                height={1000}
+                className="h-full w-full scale-110 object-cover object-[center_38%]"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent" />
+            </div>
           </div>
         </motion.div>
       </div>
@@ -529,17 +496,21 @@ function About() {
           className="space-y-4 text-muted-foreground"
         >
           <p>
-            I've spent the last few years building products where the model matters as much as the
-            interface — recommendation engines, RAG pipelines, and AI-assisted tools used by teams
-            to move faster on real work.
+            I've spent the last few years building products where the model
+            matters as much as the interface — recommendation engines, RAG
+            pipelines, and AI-assisted tools used by teams to move faster on
+            real work.
           </p>
           <p>
-            I care about the details most people won't notice: prompts that stay reliable at scale,
-            latency that respects the user's patience, APIs that are easy to hold in your head. Give
-            me a messy, ambiguous problem and I'll turn it into something small, sharp, and
-            shippable.
+            I care about the details most people won't notice: prompts that stay
+            reliable at scale, latency that respects the user's patience, APIs
+            that are easy to hold in your head. Give me a messy, ambiguous
+            problem and I'll turn it into something small, sharp, and shippable.
           </p>
-          <p>Off the clock I'm usually running, reading science-fiction, or pulling espresso.</p>
+          <p>
+            Off the clock I'm usually running, reading science-fiction, or
+            pulling espresso.
+          </p>
         </motion.div>
 
         <motion.div
@@ -559,9 +530,16 @@ function About() {
               ["30%", "Latency reduction on an AI pipeline"],
               ["4", "Engineers mentored to their first launch"],
             ].map(([n, label]) => (
-              <div key={label} className="flex items-baseline justify-between gap-4">
-                <dt className="font-display text-2xl font-semibold text-primary">{n}</dt>
-                <dd className="text-right text-sm text-muted-foreground">{label}</dd>
+              <div
+                key={label}
+                className="flex items-baseline justify-between gap-4"
+              >
+                <dt className="font-display text-2xl font-semibold text-primary">
+                  {n}
+                </dt>
+                <dd className="text-right text-sm text-muted-foreground">
+                  {label}
+                </dd>
               </div>
             ))}
           </dl>
@@ -575,7 +553,7 @@ function TechStackMarquee() {
   const duplicated = [...STACK_TAGS, ...STACK_TAGS];
 
   return (
-    <section className="relative py-10">
+    <section className="relative py-4">
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent sm:w-24" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent sm:w-24" />
 
@@ -628,7 +606,9 @@ function Projects() {
   }, []);
 
   useEffect(() => {
-    setIndex((prev) => Math.min(prev, Math.max(0, PROJECTS.length - itemsPerPage)));
+    setIndex((prev) =>
+      Math.min(prev, Math.max(0, PROJECTS.length - itemsPerPage)),
+    );
   }, [itemsPerPage]);
 
   const maxIndex = Math.max(0, PROJECTS.length - itemsPerPage);
@@ -647,12 +627,18 @@ function Projects() {
     );
   };
 
-  const handleDragEnd = (_: unknown, info: { offset: { x: number }; velocity: { x: number } }) => {
+  const handleDragEnd = (
+    _: unknown,
+    info: { offset: { x: number }; velocity: { x: number } },
+  ) => {
     const threshold = 60;
     const velocityThreshold = 300;
     if (info.offset.x < -threshold || info.velocity.x < -velocityThreshold) {
       goNext();
-    } else if (info.offset.x > threshold || info.velocity.x > velocityThreshold) {
+    } else if (
+      info.offset.x > threshold ||
+      info.velocity.x > velocityThreshold
+    ) {
       goPrev();
     }
     setDragX(0);
@@ -671,7 +657,20 @@ function Projects() {
   const trackWidthPercent = (PROJECTS.length * 100) / itemsPerPage;
 
   return (
-    <Section id="projects" eyebrow="Selected work" title="Projects I'm proud of.">
+    <Section
+      id="projects"
+      eyebrow="Selected work"
+      title="Projects I'm proud of."
+      action={
+        <Link
+          to="/projects"
+          className="group inline-flex w-fit shrink-0 items-center gap-2 rounded-md border border-primary/40 bg-primary/10 px-4 py-2 text-sm font-medium text-primary transition hover:bg-primary/20"
+        >
+          View all {PROJECTS.length} projects
+          <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </Link>
+      }
+    >
       <div
         className="relative"
         onMouseEnter={() => setIsPaused(true)}
@@ -726,8 +725,12 @@ function Projects() {
                       </div>
                     </div>
 
-                    <h3 className="mt-6 text-lg font-semibold text-foreground">{p.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground">{p.blurb}</p>
+                    <h3 className="mt-6 text-lg font-semibold text-foreground">
+                      {p.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {p.blurb}
+                    </p>
 
                     <div className="mt-5 flex flex-wrap gap-1.5">
                       {p.tags.map((t) => (
@@ -802,45 +805,240 @@ function Projects() {
 }
 
 function Experience() {
+  const [showEarlierExperience, setShowEarlierExperience] = useState(false);
+  const recentExperience = EXPERIENCE.slice(0, 3);
+  const earlierExperience = EXPERIENCE.slice(3);
+
   return (
-    <Section id="experience" eyebrow="Experience" title="Where I've built things.">
+    <Section
+      id="experience"
+      eyebrow="Experience"
+      title="Where I've built things."
+    >
       <div className="relative">
-        <div className="absolute left-3 top-1 h-full w-px bg-gradient-to-b from-primary/60 via-primary/20 to-transparent md:left-4" />
-        <ol className="space-y-10">
-          {EXPERIENCE.map((e, i) => (
+        <div className="absolute bottom-8 left-[7px] top-8 w-px bg-gradient-to-b from-primary/70 via-primary/30 to-transparent md:left-[187px]" />
+        <ol className="space-y-6">
+          {recentExperience.map((e, i) => (
             <motion.li
               key={e.company}
               initial={{ opacity: 0, x: 16 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.45, delay: i * 0.08 }}
-              className="relative pl-12 md:pl-16"
+              className="relative grid gap-3 pl-8 md:grid-cols-[160px_minmax(0,1fr)] md:gap-14 md:pl-0"
             >
-              <span className="absolute left-1.5 top-1 grid h-4 w-4 place-items-center rounded-full bg-background ring-2 ring-primary md:left-2.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-glow" />
+              <span
+                className={`absolute left-0 top-7 grid h-4 w-4 place-items-center rounded-full border bg-background md:left-[180px] ${
+                  e.current ? "border-primary shadow-glow" : "border-primary/60"
+                }`}
+              >
+                {e.current && (
+                  <span className="absolute h-4 w-4 animate-ping rounded-full bg-primary/30" />
+                )}
+                <span className="relative h-1.5 w-1.5 rounded-full bg-primary" />
               </span>
-              <div className="rounded-xl border border-border bg-card/50 p-6 transition hover:border-primary/40">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="text-lg font-semibold">
-                    {e.role} <span className="text-primary">· {e.company}</span>
-                  </h3>
-                  <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <Calendar className="h-3.5 w-3.5" /> {e.dates}
-                    <span className="mx-1">·</span> {e.location}
-                  </span>
-                </div>
-                <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-                  {e.points.map((pt) => (
-                    <li key={pt} className="flex gap-2">
-                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" />
-                      {pt}
-                    </li>
-                  ))}
-                </ul>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 py-1 text-xs text-muted-foreground md:flex-col md:items-start md:justify-center md:py-0">
+                <span className="font-display text-sm font-semibold tracking-wide text-primary">
+                  {e.dates}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5" />
+                  {e.location}
+                </span>
               </div>
+              <article
+                className={`group relative overflow-hidden rounded-2xl border p-5 transition duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-glow sm:p-7 ${
+                  e.current
+                    ? "border-primary/50 bg-primary/[0.06]"
+                    : "border-border bg-card/70"
+                }`}
+              >
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-primary/5 blur-3xl transition group-hover:bg-primary/10"
+                />
+                <div className="relative">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-primary/80">
+                        Career · {String(i + 1).padStart(2, "0")}
+                      </p>
+                      <h3 className="mt-2 text-xl font-semibold sm:text-2xl">
+                        {e.role}
+                      </h3>
+                      <p className="mt-1 font-medium text-muted-foreground">
+                        {e.company}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {e.current && (
+                        <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
+                          <span className="relative flex h-2 w-2">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/50" />
+                            <span className="relative h-2 w-2 rounded-full bg-primary" />
+                          </span>
+                          Current role
+                        </span>
+                      )}
+                      <span className="hidden h-10 w-10 place-items-center rounded-xl border border-primary/20 bg-primary/5 text-primary sm:grid">
+                        <Calendar className="h-4 w-4" />
+                      </span>
+                    </div>
+                  </div>
+                  <ul className="mt-6 grid gap-3 border-t border-border/70 pt-5 text-sm leading-relaxed text-muted-foreground sm:grid-cols-2">
+                    {e.points.map((pt) => (
+                      <li key={pt} className="flex gap-2.5">
+                        <span className="mt-[0.55rem] h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                        {pt}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
             </motion.li>
           ))}
         </ol>
+        {earlierExperience.length > 0 && (
+          <div className="relative mt-6 pl-8 md:ml-[214px] md:pl-0">
+            <button
+              type="button"
+              aria-expanded={showEarlierExperience}
+              onClick={() =>
+                setShowEarlierExperience((isVisible) => !isVisible)
+              }
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/70 px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:border-primary/50 hover:text-primary"
+            >
+              {showEarlierExperience
+                ? "Hide earlier roles"
+                : `Show earlier roles (${earlierExperience.length})`}
+              <ChevronDown
+                className={`h-4 w-4 transition-transform ${
+                  showEarlierExperience ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            {showEarlierExperience && (
+              <ol className="mt-4 space-y-3">
+                {earlierExperience.map((e, index) => (
+                  <motion.li
+                    key={e.company}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25, delay: index * 0.04 }}
+                    className="relative"
+                  >
+                    <span className="absolute -left-[34px] top-5 grid h-3 w-3 place-items-center rounded-full border border-primary/60 bg-background md:-left-[27px]">
+                      <span className="h-1 w-1 rounded-full bg-primary" />
+                    </span>
+                    <article className="rounded-xl border border-border/80 bg-card/40 px-4 py-3 transition hover:border-primary/40 sm:flex sm:items-center sm:justify-between sm:gap-4">
+                      <div>
+                        <p className="text-sm font-semibold">{e.role}</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          {e.company}
+                        </p>
+                      </div>
+                      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground sm:mt-0 sm:justify-end">
+                        <span>{e.dates}</span>
+                        <span className="flex items-center gap-1">
+                          <MapPin className="h-3 w-3" />
+                          {e.location}
+                        </span>
+                      </div>
+                    </article>
+                  </motion.li>
+                ))}
+              </ol>
+            )}
+          </div>
+        )}
+      </div>
+    </Section>
+  );
+}
+
+function Recognition() {
+  return (
+    <Section
+      id="recognition"
+      eyebrow="Learning & community"
+      title="Certifications & events."
+      action={
+        <Link
+          to="/recognition"
+          className="group inline-flex w-fit shrink-0 items-center gap-2 rounded-md border border-primary/40 bg-primary/10 px-4 py-2 text-sm font-medium text-primary transition hover:bg-primary/20"
+        >
+          View all {RECOGNITION.length}
+          <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </Link>
+      }
+    >
+      <div className="grid gap-5 md:grid-cols-3">
+        {RECOGNITION.map(
+          (
+            {
+              category,
+              title,
+              organizer,
+              date,
+              icon: Icon,
+              image,
+              imageAccent,
+            },
+            index,
+          ) => (
+            <motion.article
+              key={category}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.4, delay: index * 0.08 }}
+              className="overflow-hidden rounded-2xl border border-border bg-card/50 p-6 transition hover:border-primary/40 hover:shadow-glow"
+            >
+              <div
+                className={`relative -mx-6 -mt-6 mb-5 flex h-36 items-center justify-center overflow-hidden ${
+                  image
+                    ? "bg-background/80"
+                    : `bg-gradient-to-br ${imageAccent}`
+                }`}
+              >
+                {image ? (
+                  <img
+                    src={image}
+                    alt={`Photo from ${title}`}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <>
+                    <div
+                      aria-hidden
+                      className="absolute inset-0 opacity-30 [background-image:linear-gradient(30deg,transparent_48%,rgba(255,255,255,0.18)_49%,transparent_50%),linear-gradient(150deg,transparent_48%,rgba(255,255,255,0.12)_49%,transparent_50%)] [background-size:36px_36px]"
+                    />
+                    <span
+                      aria-hidden
+                      className="relative grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-background/30 text-white backdrop-blur-sm"
+                    >
+                      <ImageIcon className="h-5 w-5" />
+                    </span>
+                  </>
+                )}
+              </div>
+              <div className="flex items-start justify-between gap-3">
+                <span className="grid h-11 w-11 place-items-center rounded-lg border border-primary/20 bg-primary/5 text-primary">
+                  <Icon className="h-5 w-5" />
+                </span>
+              </div>
+              <p className="mt-5 text-xs uppercase tracking-[0.16em] text-primary/80">
+                {category}
+              </p>
+              <h3 className="mt-2 text-lg font-semibold">{title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{organizer}</p>
+              <div className="mt-5 flex items-center gap-2 border-t border-border/60 pt-4 text-xs text-muted-foreground">
+                <Calendar className="h-3.5 w-3.5 text-primary" />
+                {date}
+              </div>
+            </motion.article>
+          ),
+        )}
       </div>
     </Section>
   );
@@ -908,8 +1106,9 @@ function Contact() {
       <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div className="space-y-6">
           <p className="text-muted-foreground">
-            I'm currently taking on select freelance and contract work for Q3 2026. If you have a
-            product in flight — or an idea you want to get airborne — I'd love to hear about it.
+            I'm currently taking on select freelance and contract work for Q3
+            2026. If you have a product in flight — or an idea you want to get
+            airborne — I'd love to hear about it.
           </p>
           <div className="flex flex-wrap gap-3">
             <a
@@ -1010,7 +1209,11 @@ function Contact() {
               disabled={sending}
               className="group mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition hover:shadow-glow disabled:opacity-60"
             >
-              {sent ? "Thanks — I'll be in touch." : sending ? "Sending..." : "Send message"}
+              {sent
+                ? "Thanks — I'll be in touch."
+                : sending
+                  ? "Sending..."
+                  : "Send message"}
               <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </button>
           </div>
@@ -1024,7 +1227,9 @@ function Footer() {
   return (
     <footer className="border-t border-border/40">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:px-8">
-        <span>© {new Date().getFullYear()} Anshuman Behera. Crafted with care.</span>
+        <span>
+          © {new Date().getFullYear()} Anshuman Behera. Crafted with care.
+        </span>
         <span className="flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-glow" />
           "Turning ideas into products people actually enjoy."
