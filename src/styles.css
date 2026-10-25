@@ -37,42 +37,6 @@
 }
 
 :root {
-  color-scheme: dark;
-  --background: #061100;
-  --foreground: #f1f1ed;
-  --card: #111310;
-  --card-foreground: #f1f1ed;
-  --popover: #111310;
-  --popover-foreground: #f1f1ed;
-  --muted: #20251e;
-  --muted-foreground: #b4b9b0;
-  --primary: #a31c18;
-  --primary-foreground: #ffffff;
-  --accent: #a31c18;
-  --accent-foreground: #ffffff;
-  --secondary: #061100;
-  --secondary-foreground: #f1f1ed;
-  --destructive: #a31c18;
-  --destructive-foreground: #ffffff;
-  --border: #353a32;
-  --input: #353a32;
-  --ring: #a31c1899;
-
-  --forest: #061100;
-  --green: #254126;
-  --green-soft: #25412626;
-  --shadow-glow: 0 0 40px #a31c1859;
-  --ambient-glow:
-    radial-gradient(1000px 500px at 15% -10%, #061100b3, transparent 60%),
-    radial-gradient(800px 500px at 100% 30%, #a31c1814, transparent 60%);
-  --gradient-radial-green: radial-gradient(
-    circle at 50% 40%,
-    #a31c1859,
-    transparent 60%
-  );
-}
-
-html.light {
   color-scheme: light;
   --background: #f4f4f0;
   --foreground: #1b1d19;
@@ -93,6 +57,7 @@ html.light {
   --border: #d0d4cb;
   --input: #d0d4cb;
   --ring: #a31c1880;
+
   --forest: #061100;
   --green: #254126;
   --green-soft: #2541261a;
@@ -100,6 +65,36 @@ html.light {
   --ambient-glow:
     radial-gradient(1000px 500px at 15% -10%, #06110012, transparent 60%),
     radial-gradient(800px 500px at 100% 30%, #a31c180a, transparent 60%);
+}
+
+html:not(.light) {
+  color-scheme: dark;
+  --background: #061100;
+  --foreground: #f1f1ed;
+  --card: #111310;
+  --card-foreground: #f1f1ed;
+  --popover: #111310;
+  --popover-foreground: #f1f1ed;
+  --muted: #20251e;
+  --muted-foreground: #b4b9b0;
+  --primary: #a31c18;
+  --primary-foreground: #ffffff;
+  --accent: #a31c18;
+  --accent-foreground: #ffffff;
+  --secondary: #061100;
+  --secondary-foreground: #f1f1ed;
+  --destructive: #a31c18;
+  --destructive-foreground: #ffffff;
+  --border: #353a32;
+  --input: #353a32;
+  --ring: #a31c1899;
+  --forest: #061100;
+  --green: #254126;
+  --green-soft: #25412626;
+  --shadow-glow: 0 0 40px #a31c1859;
+  --ambient-glow:
+    radial-gradient(1000px 500px at 15% -10%, #061100b3, transparent 60%),
+    radial-gradient(800px 500px at 100% 30%, #a31c1814, transparent 60%);
 }
 
 @layer base {

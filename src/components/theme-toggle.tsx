@@ -10,12 +10,12 @@ function applyTheme(theme: Theme) {
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
   const transitionTimeout = useRef<number | null>(null);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-    const initialTheme: Theme = savedTheme === "light" ? "light" : "dark";
+    const initialTheme: Theme = savedTheme === "dark" ? "dark" : "light";
 
     setTheme(initialTheme);
     applyTheme(initialTheme);
@@ -46,19 +46,19 @@ export function ThemeToggle() {
     }, 400);
   };
 
-  // return (
-  //   <button
-  //     type="button"
-  //     onClick={toggleTheme}
-  //     aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-  //     title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-  //     className="grid h-9 w-9 shrink-0 place-items-center rounded-md border border-border bg-card/60 text-muted-foreground transition hover:border-primary/50 hover:text-primary"
-  //   >
-  //     {theme === "dark" ? (
-  //       <Sun className="h-4 w-4" />
-  //     ) : (
-  //       <Moon className="h-4 w-4" />
-  //     )}
-  //   </button>
-  // );
+  return (
+    <button
+      type="button"
+      onClick={toggleTheme}
+      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+      title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+      className="grid h-9 w-9 shrink-0 place-items-center rounded-md border border-border bg-card/60 text-muted-foreground transition hover:border-primary/50 hover:text-primary"
+    >
+      {theme === "dark" ? (
+        <Sun className="h-4 w-4" />
+      ) : (
+        <Moon className="h-4 w-4" />
+      )}
+    </button>
+  );
 }
