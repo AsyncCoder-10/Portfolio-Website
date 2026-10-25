@@ -5,7 +5,7 @@ export const PROJECTS = [
       "A fast, modular Retrieval-Augmented Generation (RAG) application that lets you upload PDF documents and ask questions about their content.",
     tags: ["Python", "LangChain", "Streamlit", "Groq","ChromaDB"],
     accent: "from-secondary/20 to-transparen",
-    repo: "https://github.com/AsyncCoder-10",
+    repo: "https://github.com/AsyncCoder-10/advanced-rag-chatboat",
   },
   {
     title: "RAG Docs Assistant",
