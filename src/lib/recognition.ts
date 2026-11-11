@@ -1,11 +1,12 @@
 import { Award, Building2, Presentation } from "lucide-react";
 import AWS from "@/assets/AWS.jpg";
+import AWS from "@/assets/GDG.png";
 
 export const RECOGNITION = [
   {
     category: "Expo",
-    title: "AWS UG Vadodara",
-    organizer: "Vadodara AWS User Group",
+    title: "Gen AI",
+    organizer: "AWS User Group Vadodara",
     date: "2025",
     icon: Building2,
     image: AWS,
