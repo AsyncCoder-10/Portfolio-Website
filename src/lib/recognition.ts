@@ -1,6 +1,6 @@
 import { Award, Building2, Presentation } from "lucide-react";
 import AWS from "@/assets/AWS.jpg";
-import AWS from "@/assets/GDG.png";
+import GDG from "@/assets/GDG.png";
 
 export const RECOGNITION = [
   {
